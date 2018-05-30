@@ -1,44 +1,33 @@
 ﻿(function () {
 
     let historicalDataProvider = new HistoricalDataProvider();
-    let myChart = InitializeChart();
+    let chartController = new ChartController();
 
-    let ccHistoricalData = historicalDataProvider.LoadCryptocurrenciesHistoricalData(function (coinName, data) {
+    let myChart = chartController.InitializeChart('myChart');
+
+    let ccHistoricalData = historicalDataProvider.LoadCryptocurrenciesHistoricalData(function (coinName, fetchedData) {
 
         console.log(coinName);
-        console.log(data);
+        console.log(fetchedData);
+
+        let labels = fetchedData.map(o => o.time);
+        let data = fetchedData.map(o => [o.average]);
+        let color = chartController.GetColor();
+
+        myChart.data.labels = labels;
+        myChart.data.datasets.push({
+            label: coinName,
+            data: data,
+            backgroundColor: [
+                color.background
+            ],
+            borderColor: [
+                color.border
+            ],
+            borderWidth: 1
+        });
+
+        myChart.update();
     });
 
-    // Function creating chart object
-    function InitializeChart() {
-
-        const ctx = document.getElementById("myChart").getContext('2d');
-        return new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: [],
-                datasets: [{
-                    label: 'CoinTrends',
-                    data: [],
-                    backgroundColor: [
-                        'rgba(52, 152, 219, 0.2)'
-                    ],
-                    borderColor: [
-                        'rgba(41, 128, 185, 1.0)'
-                    ],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                scales: {
-                    yAxes: [{
-                        ticks: {
-                            beginAtZero: true
-                        },
-                        type: 'logarithmic'
-                    }]
-                }
-            }
-        });
-    }
 })();

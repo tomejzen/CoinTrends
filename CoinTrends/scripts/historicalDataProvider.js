@@ -26,15 +26,12 @@ class HistoricalDataProvider {
 
     LoadCryptocurrenciesHistoricalData(callback) {
 
-        let cryptocurrenciesData = new Array(this.CRYPTOCURRENCIES.length);
+        this.CRYPTOCURRENCIES.forEach((coinName) => {
 
-        for (let i = 0; i < cryptocurrenciesData.length; i++) {
-
-            const coinName = this.CRYPTOCURRENCIES[i];
             this.LoadCryptocurrencyHistoricalData(coinName, function (xhttp) {
 
                 callback(coinName, JSON.parse(xhttp.responseText));
             });
-        }
+        });
     }
 }
