@@ -9,8 +9,6 @@
         
         let labels = fetchedData.map(o => o.time.substring(0, o.time.length - 9)).reverse();
         let data = fetchedData.map(o => o.average).reverse();
-        let color = chartController.GetColor();
-
 
         let i = 0;
         while (i < chartController.chart.dataProvider.length && chartController.chart.dataProvider[i].date < labels[0]) {

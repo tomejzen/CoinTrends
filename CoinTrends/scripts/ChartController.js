@@ -76,8 +76,9 @@
     CreateValueAxis() {
 
         this.valueAxis = new AmCharts.ValueAxis();
-        this.valueAxis.axisColor = "#FF6600";
+        this.valueAxis.axisColor = "#DADADA";
         this.valueAxis.axisThickness = 2;
+        this.valueAxis.logarithmic = true;
         this.chart.addValueAxis(this.valueAxis);
     }
 
