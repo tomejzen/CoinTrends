@@ -5,24 +5,43 @@
     let historicalDataProvider = new HistoricalDataProvider();
     let myChart = InitializeChart();
 
-    historicalDataProvider.Load("BTCUSD", (xhttp) => {
 
-        if (xhttp.readyState == 4 && xhttp.status == 200) {
+    document.getElementsByClassName('crypto-button').forEach((button) => {
 
-            let fetchedData = JSON.parse(xhttp.responseText);
-
-            let labels = fetchedData.map(o => o.time);
-            let data = fetchedData.map(o => [o.average]);
-
-            myChart.data.labels = labels;
-            myChart.data.datasets.forEach((dataset) => {
-                dataset.data = data;
-            });
-
-            myChart.update();
-        }
+        button.onclick = function () {
+            cryptoButtonClicked(this);
+            return false;
+        };
     });
 
+    function cryptoButtonClicked(button) {
+
+        const coinName = button.dataset.coin;
+        LoadCryptocurrencyOnChart(coinName);
+    }
+
+    LoadCryptocurrencyOnChart("BTCUSD");
+
+    function LoadCryptocurrencyOnChart(coinName) {
+
+        historicalDataProvider.Load(coinName, (xhttp) => {
+
+            if (xhttp.readyState == 4 && xhttp.status == 200) {
+
+                let fetchedData = JSON.parse(xhttp.responseText);
+
+                let labels = fetchedData.map(o => o.time);
+                let data = fetchedData.map(o => [o.average]);
+
+                myChart.data.labels = labels;
+                myChart.data.datasets.forEach((dataset) => {
+                    dataset.data = data;
+                });
+
+                myChart.update();
+            }
+        });
+    }
 
     // Function creating chart object
     function InitializeChart() {
