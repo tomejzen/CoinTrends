@@ -11,29 +11,32 @@
         let data = fetchedData.map(o => o.average).reverse();
         let color = chartController.GetColor();
 
-        if (labels.length > myChart.data.labels.length) {
-            let prependAmount = labels.length - myChart.data.labels.length;
-            myChart.data.labels = labels;
 
-            myChart.data.datasets.forEach((dataset) => {
-                let emptyArray = new Array(prependAmount).fill(undefined);
-                dataset.data = emptyArray.concat(dataset.data);
-            });
+        let i = 0;
+        while (i < chartController.chart.dataProvider.length && chartController.chart.dataProvider[i].date < labels[0]) {
+            i++;
         }
 
-        myChart.data.datasets.push({
-            label: coinName,
-            data: data,
-            backgroundColor: [
-                color.background
-            ],
-            borderColor: [
-                color.border
-            ],
-            borderWidth: 1
-        });
+        for (let j = 0; j < data.length; j++, i++) {
 
-        myChart.update();
+            if (i >= chartController.chart.dataProvider.length)
+                chartController.chart.dataProvider[i] = {};
+
+            chartController.chart.dataProvider[i][coinName] = data[j];
+            chartController.chart.dataProvider[i]['date'] = labels[j];
+        }
+
+        var graph1 = new AmCharts.AmGraph();
+        graph1.valueAxis = chartController.valueAxis; // we have to indicate which value axis should be used
+        graph1.title = coinName;
+        graph1.valueField = coinName;
+        graph1.bullet = "round";
+        graph1.hideBulletsCount = 30;
+        graph1.bulletBorderThickness = 1;
+        chartController.chart.addGraph(graph1);
+
+        console.log(chartController.chart.dataProvider);
+        
     });
 
 })();
