@@ -4,18 +4,41 @@
     <meta charset="utf-8" />
     <title>CoinTredns</title>
 
+    <!-- Styles -->
     <link href="styles/normalize.css" rel="stylesheet" />
     <link href="styles/site.css" rel="stylesheet" />
 </head>
 <body>
     <main>
+        <!-- Logo -->
         <img src="images/kainos-logo-sticky.png" alt="Logo" />
 
+        <!-- Header -->
         <h1>CoinTrends - Challenge 2018</h1>
 
+        <!-- Cryptocurrency buttons -->
+        <div class="crypto-buttons">
+            <button class="crypto-button" data-coin="BTCUSD">
+                <img src="images/btc.png" alt="Bitcoin" />
+                Bitcoin
+            </button>
+
+            <button class="crypto-button" data-coin="LTCUSD">
+                <img src="images/ltc.png" alt="Litecoin" />
+                Litecoin
+            </button>
+
+            <button class="crypto-button" data-coin="ETHUSD">
+                <img src="images/eth.png" alt="Ethereum" />
+                Ethereum
+            </button>
+        </div>
+
+        <!-- Chart -->
         <canvas id="myChart"></canvas>
     </main>
 
+    <!-- Scripts -->
     <script src="scripts/Chart.js"></script>
     <script src="scripts/site.js"></script>
 </body>
