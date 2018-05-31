@@ -15,7 +15,9 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
-      'test/*.js'
+        'node_modules/amcharts3/amcharts/*.js',
+        'scripts/*.js',
+        'test/*.js'
     ],
 
 
