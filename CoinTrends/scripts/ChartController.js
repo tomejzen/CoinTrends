@@ -66,7 +66,7 @@
         let chartCursor = new AmCharts.ChartCursor();
         chartCursor.cursorAlpha = 0.1;
         chartCursor.fullWidth = true;
-        chartCursor.valueLineBalloonEnabled = true;
+        chartCursor.valueLineBalloonEnabled = false;
         return chartCursor;
     }
 
