@@ -3,7 +3,10 @@
     let historicalDataProvider = new HistoricalDataProvider();
     let chartController = new ChartController();
 
-    let myChart = chartController.InitializeChart('myChart');
+    // Initalize chart
+    AmCharts.ready(function () {
+        chartController.RenderChart('chart');
+    });
 
     let ccHistoricalData = historicalDataProvider.LoadCryptocurrenciesHistoricalData(function (coinName, fetchedData) {
         
@@ -39,18 +42,10 @@
             chartController.chart.dataProvider[i]['date'] = labels[j];
         }
 
-        var graph1 = new AmCharts.AmGraph();
-        graph1.valueAxis = chartController.valueAxis; // we have to indicate which value axis should be used
-        graph1.title = coinName;
-        graph1.valueField = coinName;
-        graph1.bullet = "round";
-        graph1.hideBulletsCount = 30;
-        graph1.bulletBorderThickness = 1;
-        graph1.lineColor = chartController.GetColor();
-        chartController.chart.addGraph(graph1);
+        let graph = chartController.CreateGraph(coinName, coinName, chartController.valueAxis);
+        chartController.chart.addGraph(graph);
 
         console.log(coinName);
-        
     });
 
 })();
