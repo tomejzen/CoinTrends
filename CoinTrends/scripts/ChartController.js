@@ -3,12 +3,9 @@
     constructor() {
 
         this.colors = [
-            'rgba(26, 188, 156, 1)',
-            'rgba(231, 76, 60, 1)',
-            'rgba(155, 89, 182, 1)',
-            'rgba(46, 204, 113, 1)',
-            'rgba(52, 152, 219, 1)',
-            'rgba(241, 196, 15, 1)'
+            '#9b59b6',
+            '#34495e',
+            '#e67e22'
         ];
         this.currentColorIndex = 0;
 
@@ -93,6 +90,7 @@
         graph.bullet = "round";
         graph.hideBulletsCount = 30;
         graph.bulletBorderThickness = 1;
+        graph.lineThickness = 3;
         graph.lineColor = this.GetColor();
         return graph;
     }

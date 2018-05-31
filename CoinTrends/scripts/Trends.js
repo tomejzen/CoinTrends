@@ -2,6 +2,8 @@
 
     constructor() {
 
+        this.DROP_COLOR = "#e74c3c";
+        this.GROWTH_COLOR = "#2ecc71";
     }
 
     CalculateTrend(data, valueField) {
@@ -120,6 +122,34 @@
             maximums: maximums
         };
     }
+
+    // Calculate trends data required by chart to draw it
+    CalculateTrends(data, coinName) {
+
+        let trends = [];
+
+        for (let k = 0; k < data.length / 7; k++) {
+
+            // Slice data to get only week part
+            let dataPart = data.slice(k * 7, (k + 1) * 7);
+
+            // Get trend informations
+            let trend = this.CalculateTrend(dataPart, coinName);
+            trend.startTime = dataPart[0]['time'];
+            trend.endTime = dataPart[dataPart.length - 1]['time'];
+
+            // Assign color of drop
+            trend.color = this.DROP_COLOR;
+            if (trend.type == 'growth')
+                trend.color = this.GROWTH_COLOR;
+
+            // Add trend to collection
+            trends.push(trend);
+        }
+
+        return trends;
+    }
+
 
     // Check function direction going from b to a
     GetDirection(a, b) {

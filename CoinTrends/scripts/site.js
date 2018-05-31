@@ -10,6 +10,7 @@
         chartController.RenderChart('chart');
     });
 
+    // Load data and create callback to deal with received data
     let loadedValues = [];
     historicalDataProvider.LoadCryptocurrenciesHistoricalData(function (coinName, fetchedData) {
 
@@ -21,18 +22,17 @@
         loadedValues.push(coinName);
         chartController.chart.dataProvider = mergedData;
 
+        // Draw graph trend lines
+        let trendLines = trends.CalculateTrends(chartController.chart.dataProvider, coinName);
+        trendLines.forEach(trend => {
+
+            let trendLine = chartController.CreateTrendLine(trend.startTime, trend.startValue, trend.endTime, trend.endValue, trend.color);
+            chartController.chart.addTrendLine(trendLine);
+        });
+
         // Create graph of currenlty loaded coin
         let graph = chartController.CreateGraph(coinName, coinName, chartController.valueAxis);
         chartController.chart.addGraph(graph);
-
-        //for (let k = 0; k < chartController.chart.dataProvider.length / 7; k++) {
-
-        //    let dataPart = chartController.chart.dataProvider.slice(k * 7, (k + 1) * 7);
-            
-        //    let trend = trends.CalculateTrend(dataPart, coinName);
-        //    let trendLine = chartController.CreateTrendLine(dataPart[0]['time'], trend.startValue, dataPart[dataPart.length - 1]['time'], trend.endValue, "#ff0000");
-        //    chartController.chart.addTrendLine(trendLine);
-        //}
     });
 
 })();
