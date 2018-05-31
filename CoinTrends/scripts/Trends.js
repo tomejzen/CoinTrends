@@ -4,6 +4,7 @@
 
         this.DROP_COLOR = "#e74c3c";
         this.GROWTH_COLOR = "#2ecc71";
+        this.TREND_LENGTH = 10;
     }
 
     CalculateTrend(data, valueField) {
@@ -45,11 +46,14 @@
                 // Get function factors based on extreme points
                 let fFactors = this.CalculateFunctionFactors(extremes[i], data[extremes[i]][valueField], extremes[j], data[extremes[j]][valueField]);
 
+                if (!compare(fFactors.aFactor, 0))
+                    continue;
+                
                 // Function we will use to calculate points of trend line
                 let f = (x) => (fFactors.aFactor * x) + fFactors.bFactor;
 
                 // For every point in extremes check if current trend line is valid
-                // (No points available below trend line if it is drop)
+                // (No points available below trend line if it is drop, and over if it is growth)
                 let valid = true;
                 for (let k = 0; k < extremes.length; k++) {
 
@@ -75,6 +79,13 @@
                 }
             }
         }
+
+        return {
+            startValue: data[0][valueField],
+            endValue: data[data.length - 1][valueField],
+            aFactor: 0,
+            bFactor: 0
+        };
     }
 
     // Search data for extreme points
@@ -97,7 +108,7 @@
         for (let i = 2; i < data.length; i++) {
 
             let currentDirection = this.GetDirection(data[i][valueField], data[i - 1][valueField]);
-
+            
             // Function direction changed add point as extreme
             if (currentDirection != lastDirection) {
 
@@ -128,15 +139,15 @@
 
         let trends = [];
 
-        for (let k = 0; k < data.length / 7; k++) {
+        for (let k = 0; k < data.length / this.TREND_LENGTH; k++) {
 
             // Slice data to get only week part
-            let dataPart = data.slice(k * 7, (k + 1) * 7);
+            let dataPart = data.slice(k * this.TREND_LENGTH, (k + 1) * this.TREND_LENGTH);
 
             // Get trend informations
             let trend = this.CalculateTrend(dataPart, coinName);
-            trend.startTime = dataPart[0]['time'];
-            trend.endTime = dataPart[dataPart.length - 1]['time'];
+            trend.startTime = dataPart[0]['time'].slice(0, 10) + " 12:00:00";
+            trend.endTime = dataPart[dataPart.length - 1]['time'].slice(0, 10) + " 12:00:00";
 
             // Assign color of drop
             trend.color = this.DROP_COLOR;
