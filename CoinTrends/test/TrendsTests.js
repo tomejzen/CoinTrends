@@ -101,4 +101,16 @@ describe('Trends', function () {
         expect(trendLine.bFactor).toEqual(1);
         
     });
+
+    it('should return null trend line if data is too small', function () {
+
+        // Arrange
+        let trends = new Trends();
+
+        // Act
+        let trend = trends.CalculateTrend([], 'value');
+
+        // Assert
+        expect(trend).toBeNull();
+    });
 });

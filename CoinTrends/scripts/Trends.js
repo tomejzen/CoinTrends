@@ -6,6 +6,10 @@
 
     CalculateTrend(data, valueField) {
 
+        // Not enough data to find trend line
+        if (data.length < 3)
+            return null;
+
         // Get data extremes
         let extremes = this.GetAllExtremePoints(data, valueField);
 
