@@ -5,7 +5,7 @@
     <title>CoinTredns</title>
 
     <!-- Styles -->
-    <link href="styles/normalize.css" rel="stylesheet" />
+    <link href="node_modules/normalize-css/normalize.css" rel="stylesheet" />
     <link href="styles/site.css" rel="stylesheet" />
 </head>
 <body>
@@ -17,13 +17,20 @@
         <h1>CoinTrends - Challenge 2018</h1>
 
         <!-- Chart -->
-        <canvas id="myChart"></canvas>
+        <div id="chart" style="height: 450px;"></div>
     </main>
 
+    <!-- External libraries -->
+    <script src="node_modules/normalize-css/normalize.js"></script>
+    <script src="node_modules/amcharts3/amcharts/amcharts.js"></script>
+    <script src="node_modules/amcharts3/amcharts/serial.js"></script>
+
     <!-- Scripts -->
-    <script src="scripts/Chart.js"></script>
     <script src="scripts/HistoricalDataProvider.js"></script>
     <script src="scripts/ChartController.js"></script>
     <script src="scripts/site.js"></script>
 </body>
 </html>
+
+
+
