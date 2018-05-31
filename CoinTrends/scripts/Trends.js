@@ -6,6 +6,7 @@
 
     CalculateTrend(data, valueField) {
 
+        let extremes = this.GetAllExtremePoints(data, valueField);
         
         return {
             type: 'growth',
@@ -20,15 +21,10 @@
         let maximums = [];
 
         let lastDirection = this.GetDirection(data[1][valueField], data[0][valueField]);
-        if (lastDirection == 'up') {
+        if (lastDirection == 'up' || lastDirection == 'same') {
             minimums.push(0);
         }
-        else if (lastDirection == 'down') {
-            maximums.push(0);
-        }
-        else if (lastDirection == 'still') {
-
-            minimums.push(0);
+        if (lastDirection == 'down' || lastDirection == 'same') {
             maximums.push(0);
         }
 
@@ -59,6 +55,7 @@
     }
 
     GetDirection(a, b) {
+
         if (a == b)
             return 'same';
 
