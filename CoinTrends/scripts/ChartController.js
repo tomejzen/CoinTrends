@@ -97,6 +97,20 @@
         return graph;
     }
 
+    CreateTrendLine(initialDate, initalValue, finalDate, finalValue, color) {
+
+        let trendLine = new AmCharts.TrendLine();
+
+        trendLine.initialDate = initialDate;
+        trendLine.initialValue = initalValue;
+
+        trendLine.finalDate = finalDate;
+        trendLine.finalValue = finalValue;
+
+        trendLine.lineColor = color;
+        return trendLine;
+    }
+
     GetColor() {
         return this.colors[this.currentColorIndex++];
     }

@@ -75,6 +75,18 @@ describe('ChartController', function () {
         expect(categoryAxis instanceof AmCharts.CategoryAxis).toBeTruthy();
     });
 
+    it('should create TrendLine object', function () {
+
+        // Arrange
+        let chartController = new ChartController();
+
+        // Act
+        let trendLine = chartController.CreateTrendLine(1, 1, 2, 3, '#ff0000');
+
+        // Assert
+        expect(trendLine instanceof AmCharts.TrendLine).toBeTruthy();
+    });
+    
     it('should render chart in div with specified id', function () {
 
         // Arragne
