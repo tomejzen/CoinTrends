@@ -10,16 +10,26 @@ class HistoricalDataProvider {
 
     LoadCryptocurrencyHistoricalData(coinName, callback) {
 
+        // Prepere request
         const url = this.API_ADDRESS.replace("{symbol}", coinName);
         const xhttp = new XMLHttpRequest();
 
         xhttp.onreadystatechange = function () {
 
-            if (xhttp.readyState == 4 && xhttp.status == 200) {
-                callback(xhttp);
-            }
+            // We are waiting untill request is finished
+            if (xhttp.readyState != 4)
+                return;
+
+            // Set the response basing on what we got back
+            let response = null;
+            if (xhttp.status == 200)
+                response = xhttp;
+
+            // Callback
+            callback(response);
         };
 
+        // Execute request
         xhttp.open("GET", url, true);
         xhttp.send();
     }
