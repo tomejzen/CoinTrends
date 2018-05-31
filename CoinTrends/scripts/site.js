@@ -44,8 +44,6 @@
 
         let graph = chartController.CreateGraph(coinName, coinName, chartController.valueAxis);
         chartController.chart.addGraph(graph);
-
-        console.log(coinName);
     });
 
 })();
