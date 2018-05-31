@@ -9,10 +9,12 @@
         chartController.RenderChart('chart');
     });
 
-    let ccHistoricalData = historicalDataProvider.LoadCryptocurrenciesHistoricalData(function (coinName, fetchedData) {
+    historicalDataProvider.LoadCryptocurrenciesHistoricalData(function (coinName, fetchedData) {
         
-        let labels = fetchedData.map(o => o.time.substring(0, o.time.length - 9)).reverse();
-        let data = fetchedData.map(o => o.average).reverse();
+        let labels = fetchedData.map(o => o.time.substring(0, o.time.length - 9));
+        let data = fetchedData.map(o => o.average);
+
+        chartController.chart.dataProvider = chartController.MergeData(chartController.chart.dataProvider, fetchedData);
 
         if (labels[0] < chartController.chart.dataProvider[0]) {
 

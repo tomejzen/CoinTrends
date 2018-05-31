@@ -100,4 +100,33 @@ describe('ChartController', function () {
 
         expect(document.getElementById('myChart').innerHTML).not.toEqual('');
     });
+
+    it('should merge data that will be displayed on chart', function () {
+
+        // Arrange
+        let chartController = new ChartController();
+        let data1 = [
+            { date: '2012-12-12', value1: 100 }
+            { date: '2012-12-13', value1: 101 }
+            { date: '2012-12-14', value1: 102 }
+        ];
+        let data2 = [
+            { date: '2012-12-11', value2: 9 }
+            { date: '2012-12-12', value2: 10 }
+            { date: '2012-12-13', value2: 11 }
+            { date: '2012-12-14', value2: 12 }
+        ];
+
+        // Act
+        let mergedData = chartController.MergeData(data1, data2);
+        let mergedData2 = chartController.MergeData(data2, data1);
+
+        // Assert
+        expect(mergedData.length).toEqual(4);
+        expect(mergedData[0].value1).toBeNull();
+        expect(mergedData[0].value2).toEqual(9);
+        expect(mergedData[3].value1).toEqual(102);
+        expect(mergedData[3].value2).toEqual(12);
+        expect(mergedData).toEqual(mergedData2);
+    });
 });

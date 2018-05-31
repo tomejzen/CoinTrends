@@ -114,5 +114,10 @@
     GetColor() {
         return this.colors[this.currentColorIndex++];
     }
+
+    MergeData(dataA, dataB) {
+
+
+    }
 }
 

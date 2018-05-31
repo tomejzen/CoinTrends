@@ -40,7 +40,7 @@ class HistoricalDataProvider {
 
             this.LoadCryptocurrencyHistoricalData(coinName, function (xhttp) {
 
-                callback(coinName, JSON.parse(xhttp.responseText));
+                callback(coinName, JSON.parse(xhttp.responseText).reverse());
             });
         });
     }
