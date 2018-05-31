@@ -13,11 +13,8 @@
     historicalDataProvider.LoadCryptocurrenciesHistoricalData(function (coinName, fetchedData) {
 
         fetchedData.forEach(v => v[coinName] = v.average);
-        console.log(loadedValues);
         let mergedData = chartController.MergeData(chartController.chart.dataProvider, loadedValues, fetchedData, [coinName]);
-
-        console.log(mergedData);
-
+        
         loadedValues.push(coinName);
         chartController.chart.dataProvider = mergedData;
         
