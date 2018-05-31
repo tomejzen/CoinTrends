@@ -117,6 +117,8 @@
                 else if (currentDirection == 'down')
                     maximums.push(i - 1);
             }
+            else if (currentDirection == lastDirection && currentDirection == 'same')
+                minimums.push(i - 1);
 
             lastDirection = currentDirection;
         }
@@ -124,7 +126,7 @@
         // Add last point as extreme
         if (lastDirection == 'up')
             maximums.push(data.length - 1);
-        else if (lastDirection == 'down')
+        else if (lastDirection == 'down' || lastDirection == 'same')
             minimums.push(data.length - 1);
 
         // Return found extreemes

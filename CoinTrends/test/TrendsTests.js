@@ -169,27 +169,22 @@ describe('Trends', function () {
         // Arrange
         let trends = new Trends();
         let data = [
-            { value: 11.49 },
-            { value: 11.62 },
-            { value: 11.75 },
-            { value: 12.08 },
-            { value: 12.6 },
-            { value: 13.22 },
-            { value: 13.31 },
+            { value: 11.03 },
+            { value: 11.08 },
+            { value: 11.19 },
+            { value: 11.33 },
+            { value: 11.56 },
+            { value: 11.69 },
             { value: 11.86 },
-            { value: 9.09 },
-            { value: 9.51 },
+            { value: 11.86 },
+            { value: 12.03 },
+            { value: 12.39 }
         ];
 
         // Act
-        let extremes = trends.GetAllExtremePoints(data, 'value');
         let trend = trends.CalculateTrend(data, 'value');
 
         // Assert
-        expect(extremes.minimums).toEqual([0, 8]);
-        expect(extremes.maximums).toEqual([6, 9]);
-        expect(trend.type).toEqual('drop');
-        expect(trend.startValue).toEqual(11.49);
-        expect(trend.endValue).toEqual(8.79);
+        expect(trend.type).toEqual('growth');
     });
 });
