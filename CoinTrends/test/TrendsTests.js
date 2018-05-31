@@ -2,34 +2,13 @@
 describe('Trends', function () {
 
     let data1 = [
-        {
-            date: "2018-05-10",
-            value: 0
-        },
-        {
-            date: "2018-05-11",
-            value: 1
-        },
-        {
-            date: "2018-05-12",
-            value: -1
-        },
-        {
-            date: "2018-05-13",
-            value: 2
-        },
-        {
-            date: "2018-05-14",
-            value: 0
-        },
-        {
-            date: "2018-05-15",
-            value: -1
-        },
-        {
-            date: "2018-05-16",
-            value: 4
-        },
+        { value: 0 },
+        { value: 1 },
+        { value: -1 },
+        { value: 2 },
+        { value: 0 },
+        { value: -1 },
+        { value: 4 },
     ];
 
     it('should calculate extremes', function () {
@@ -38,12 +17,12 @@ describe('Trends', function () {
         let trends = new Trends();
 
         // Act
-        let extremes = trends.GetAllExtremes(data1, 'value');
-
+        let extremes = trends.GetAllExtremePoints(data1, 'value');
+        
         // Assert
-        expect(extremes.minimums.length).toEqual(3);
-        expect(extremes.maximums.length).toEqual(4);
-
+        console.log(extremes);
+        expect(extremes.minimums).toEqual([0, 2, 5]);
+        expect(extremes.maximums).toEqual([1, 3, 6]);
     });
 
     it('should calculate growth trend', function () {
