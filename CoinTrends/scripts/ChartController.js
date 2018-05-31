@@ -15,94 +15,86 @@
         this.chart = null;
     }
 
-    InitializeChart(canvasId) {
+    RenderChart(elementId) {
 
-        let chartController = this;
+        // Create chart
+        this.chart = this.CreateChart();
 
-        AmCharts.ready(function () {
+        // Render to element with specified id
+        this.chart.write(elementId);
+    }
 
-            // SERIAL CHART
-            chartController.chart = new AmCharts.AmSerialChart();
+    CreateChart() {
 
-            chartController.chart.dataProvider = [];
-            chartController.chart.categoryField = "date";
-            
-            chartController.chart.synchronizeGrid = true; // this makes all axes grid to be at the same intervals
+        let chart = new AmCharts.AmSerialChart();
 
-            // AXES
-            // category
-            var categoryAxis = chartController.chart.categoryAxis;
-            categoryAxis.parseDates = true; // as our data is date-based, we set parseDates to true
-            categoryAxis.minPeriod = "DD"; // our data is daily, so we set minPeriod to DD
-            categoryAxis.minorGridEnabled = true;
-            categoryAxis.axisColor = "#DADADA";
-            categoryAxis.twoLineMode = true;
-            categoryAxis.dateFormats = [{
-                period: 'fff',
-                format: 'JJ:NN:SS'
-            }, {
-                period: 'ss',
-                format: 'JJ:NN:SS'
-            }, {
-                period: 'mm',
-                format: 'JJ:NN'
-            }, {
-                period: 'hh',
-                format: 'JJ:NN'
-            }, {
-                period: 'DD',
-                format: 'DD'
-            }, {
-                period: 'WW',
-                format: 'DD'
-            }, {
-                period: 'MM',
-                format: 'MMM'
-            }, {
-                period: 'YYYY',
-                format: 'YYYY'
-            }];
+        chart.dataProvider = [];
+        chart.categoryField = "date";
+        chart.synchronizeGrid = true; // this makes all axes grid to be at the same intervals
 
-            chartController.CreateValueAxis();
-            chartController.CreateCursor();
-            chartController.CreateScrollbar();
-            chartController.CreateLegend();
-                      
-            // WRITE
-            chartController.chart.write("chart");
-        });
+        chart.categoryAxis = this.CreateCategoryAxis();
+        chart.addValueAxis(this.CreateValueAxis());
+        chart.addLegend(this.CreateLegend());
+        chart.addChartScrollbar(this.CreateScrollbar());
+        chart.addChartCursor(this.CreateCursor());
+
+        return chart;
     }
 
     CreateValueAxis() {
 
-        this.valueAxis = new AmCharts.ValueAxis();
-        this.valueAxis.axisColor = "#DADADA";
-        this.valueAxis.axisThickness = 2;
-        this.valueAxis.logarithmic = true;
-        this.chart.addValueAxis(this.valueAxis);
+        let valueAxis = new AmCharts.ValueAxis();
+        valueAxis.axisColor = "#DADADA";
+        valueAxis.axisThickness = 2;
+        valueAxis.logarithmic = true;
+        return valueAxis;
+    }
+
+    CreateCategoryAxis() {
+
+        let categoryAxis = new AmCharts.CategoryAxis();
+        categoryAxis.parseDates = true; // as our data is date-based, we set parseDates to true
+        categoryAxis.minPeriod = "DD"; // our data is daily, so we set minPeriod to DD
+        categoryAxis.minorGridEnabled = true;
+        categoryAxis.axisColor = "#DADADA";
+        categoryAxis.twoLineMode = true;
+        return categoryAxis;
     }
 
     CreateCursor() {
 
-        this.chartCursor = new AmCharts.ChartCursor();
-        this.chartCursor.cursorAlpha = 0.1;
-        this.chartCursor.fullWidth = true;
-        this.chartCursor.valueLineBalloonEnabled = true;
-        this.chart.addChartCursor(this.chartCursor);
+        let chartCursor = new AmCharts.ChartCursor();
+        chartCursor.cursorAlpha = 0.1;
+        chartCursor.fullWidth = true;
+        chartCursor.valueLineBalloonEnabled = true;
+        return chartCursor;
     }
 
     CreateScrollbar() {
 
-        this.chartScrollbar = new AmCharts.ChartScrollbar();
-        this.chart.addChartScrollbar(this.chartScrollbar);
+        let chartScrollbar = new AmCharts.ChartScrollbar();
+        return chartScrollbar;
     }
 
     CreateLegend() {
 
-        this.legend = new AmCharts.AmLegend();
-        this.legend.marginLeft = 110;
-        this.legend.useGraphSettings = true;
-        this.chart.addLegend(this.legend);
+        let legend = new AmCharts.AmLegend();
+        legend.marginLeft = 110;
+        legend.useGraphSettings = true;
+        return legend;
+    }
+
+    CreateGraph(title, valueField, valueAxis) {
+
+        let graph = new AmCharts.AmGraph();
+        graph.valueAxis = valueAxis;
+        graph.title = title;
+        graph.valueField = valueField;
+        graph.bullet = "round";
+        graph.hideBulletsCount = 30;
+        graph.bulletBorderThickness = 1;
+        graph.lineColor = this.GetColor();
+        return graph;
     }
 
     GetColor() {
