@@ -29,7 +29,7 @@
         let chart = new AmCharts.AmSerialChart();
 
         chart.dataProvider = [];
-        chart.categoryField = "date";
+        chart.categoryField = "time";
         chart.synchronizeGrid = true; // this makes all axes grid to be at the same intervals
 
         chart.categoryAxis = this.CreateCategoryAxis();
@@ -115,9 +115,39 @@
         return this.colors[this.currentColorIndex++];
     }
 
-    MergeData(dataA, dataB) {
+    MergeData(dataA, valueFieldsA, dataB, valueFieldsB) {
 
+        // Data set A is supposed to be longer if not reverse arguments order
+        if (dataB.length > dataA.length)
+            return this.MergeData(dataB, valueFieldsB, dataA, valueFieldsA);
 
+        // Creete array which will be returned
+        let mergedData = new Array(dataA.length);
+        let dataBIndex = 0;
+
+        for (let i = 0; i < dataA.length; i++) {
+
+            mergedData[i] = {};
+            mergedData[i]['time'] = dataA[i]['time'];
+
+            // Copy values from dataA set
+            for (let j = 0; j < valueFieldsA.length; j++)
+                mergedData[i][valueFieldsA[j]] = dataA[i][valueFieldsA[j]];
+
+            // If dataB is covering the same time as current iteration
+            if (dataB.length > dataBIndex && dataB[dataBIndex]['time'] == dataA[i]['time']) {
+
+                // Copy values from dataB set
+                for (let j = 0; j < valueFieldsB.length; j++)
+                    mergedData[i][valueFieldsB[j]] = dataB[dataBIndex][valueFieldsB[j]];
+
+                // Go to next value 
+                dataBIndex++;
+            }
+        }
+
+        // Return merged data array
+        return mergedData;
     }
 }
 
