@@ -102,6 +102,27 @@ describe('Trends', function () {
         
     });
 
+    it('should return empty trend line if not enough extremes points', function () {
+
+        // Arrange
+        let trends = new Trends();
+        let data = [
+            { value: 1 },
+            { value: -1 },
+            { value: 3 },
+        ];
+
+        // Act
+        let trendLine = trends.CalculateTrendLine(data, 'value', [0]);
+
+        // Assert
+        expect(trendLine.startValue).toEqual(data[0]['value']);
+        expect(trendLine.endValue).toEqual(data[data.length - 1]['value']);
+        expect(trendLine.aFactor).toEqual(0);
+        expect(trendLine.bFactor).toEqual(0);
+
+    });
+
     it('should return null trend line if data is too small', function () {
 
         // Arrange

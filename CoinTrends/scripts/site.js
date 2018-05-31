@@ -2,6 +2,7 @@
 
     let historicalDataProvider = new HistoricalDataProvider();
     let chartController = new ChartController();
+    let trends = new Trends();
 
     // Initalize chart
     AmCharts.ready(function () {
@@ -44,6 +45,15 @@
 
         let graph = chartController.CreateGraph(coinName, coinName, chartController.valueAxis);
         chartController.chart.addGraph(graph);
+
+        for (let k = 0; k < chartController.chart.dataProvider.length / 7; k++) {
+
+            let dataPart = chartController.chart.dataProvider.slice(k * 7, (k + 1) * 7);
+
+            let trend = trends.CalculateTrend(dataPart, coinName);
+            let trendLine = chartController.CreateTrendLine(dataPart[0]['date'], trend.startValue, dataPart[dataPart.length - 1]['date'], trend.endValue, "#ff0000");
+            chartController.chart.addTrendLine(trendLine);
+        }
     });
 
 })();

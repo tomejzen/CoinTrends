@@ -12,7 +12,7 @@
 
         // Get data extremes
         let extremes = this.GetAllExtremePoints(data, valueField);
-
+        
         // Find drop trend line
         let dropTrendLine = this.CalculateTrendLine(data, valueField, extremes.minimums, (a, b) => a < b);
         dropTrendLine['type'] = 'drop';
@@ -26,6 +26,16 @@
     }
 
     CalculateTrendLine(data, valueField, extremes, compare) {
+
+        if (extremes.length < 2) {
+
+            return {
+                startValue: data[0][valueField],
+                endValue: data[data.length - 1][valueField],
+                aFactor: 0,
+                bFactor: 0
+            };
+        }
 
         for (let i = 0; i < extremes.length - 1; i++) {
             for (let j = i + 1; j < extremes.length; j++) {
