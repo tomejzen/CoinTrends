@@ -187,4 +187,17 @@ describe('Trends', function () {
         // Assert
         expect(trend.type).toEqual('growth');
     });
+
+    it('should get maximum and minimum indexes', function () {
+
+        // Arrange
+        let trends = new Trends();
+
+        // Act
+        let minMax = trends.GetMaximumAndMinimumIndex(data1, 'value');
+
+        // Assert
+        expect(minMax.minimum).toEqual(5);
+        expect(minMax.maximum).toEqual(6);
+    });
 });

@@ -136,6 +136,17 @@
         };
     }
 
+    GetMaximumAndMinimumIndex(data, valueField) {
+
+        let maximum = data.reduce((iMax, x, i, arr) => x[valueField] > arr[iMax][valueField] ? i : iMax, 0);
+        let minimum = data.reduce((iMin, x, i, arr) => x[valueField] < arr[iMin][valueField] ? i : iMin, 0);
+
+        return {
+            maximum: maximum,
+            minimum: minimum
+        };
+    }
+
     // Calculate trends data required by chart to draw it
     CalculateTrends(data, coinName) {
 
