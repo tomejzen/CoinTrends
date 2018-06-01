@@ -22,7 +22,7 @@ describe('Trends', function () {
         { value: 8 },
         { value: 7 },
         { value: 7 },
-        { value: 6 },
+        { value: 5 },
     ];
 
     it('should calculate growth trend', function () {
@@ -48,7 +48,6 @@ describe('Trends', function () {
 
         // Act
         let trend = trends.CalculateTrend(data2, 'value');
-        console.log(trend);
         
         // Assert
         expect(trend.type).toEqual('drop');

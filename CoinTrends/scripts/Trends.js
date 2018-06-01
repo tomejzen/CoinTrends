@@ -15,20 +15,22 @@
 
         // Get data extremes
         let extremes = this.GetMaximumAndMinimumIndex(data, valueField);
+        let trendSlope = this.GetTrendSlope(data, valueField);
         
         // Find drop trend line
-        let dropTrendLine = this.CalculateTrendLine(data, valueField, extremes.minimum, (a, b) => a < b);
-        dropTrendLine['type'] = 'drop';
+        if (trendSlope < 0) {
 
+            let dropTrendLine = this.CalculateTrendLine(data, valueField, extremes.minimum, (a, b) => a < b);
+            dropTrendLine['type'] = 'drop';
+            return dropTrendLine;
+        }
         // Find growth trend line
-        let growthTrendLine = this.CalculateTrendLine(data, valueField, extremes.maximum, (a, b) => a > b);
-        growthTrendLine['type'] = 'growth';
+        else {
 
-        console.log(dropTrendLine);
-        console.log(growthTrendLine);
-
-        // Return trend that was more significant
-        return (Math.abs(dropTrendLine.aFactor) >= Math.abs(growthTrendLine.aFactor)) ? dropTrendLine : growthTrendLine;
+            let growthTrendLine = this.CalculateTrendLine(data, valueField, extremes.maximum, (a, b) => a > b);
+            growthTrendLine['type'] = 'growth';
+            return growthTrendLine;
+        }
     }
 
     CalculateTrendLine(data, valueField, extreme, compare) {
@@ -49,24 +51,9 @@
             // Function we will use to calculate points of trend line
             let f = (x) => (fFactors.aFactor * x) + fFactors.bFactor;
 
-            // For every point in data check if current trend line is valid
-            // (No points available below trend line if it is drop, and over if it is growth)
-            let valid = true;
-            for (let k = 0; k < data.length; k++) {
-
-                if (k == i || k == extreme)
-                    continue;
-
-                // Some point below trendline
-                if (compare(data[k][valueField], f(k))) {
-                    valid = false;
-                    break;
-                }
-            }
-
-            // If trend line found return it
-            if (valid) {
-
+            // Check if calculated support/resistance trendline is valid
+            if (this.IsValidSupportResistanceTrendLine(data, valueField, i, extreme, compare, f)) {
+                
                 return {
                     startValue: f(0),
                     endValue: f(data.length - 1),
@@ -85,8 +72,10 @@
         };
     }
 
+    // Find extremes in data set
     GetMaximumAndMinimumIndex(data, valueField) {
 
+        // Get indexes of maximum and minimum
         let maximum = data.reduce((iMax, x, i, arr) => x[valueField] > arr[iMax][valueField] ? i : iMax, 0);
         let minimum = data.reduce((iMin, x, i, arr) => x[valueField] < arr[iMin][valueField] ? i : iMin, 0);
 
@@ -94,6 +83,44 @@
             maximum: maximum,
             minimum: minimum
         };
+    }
+
+    IsValidSupportResistanceTrendLine(data, valueField, i, extreme, compare, f) {
+
+        // For every point in data check if current trend line is valid
+        // (No points available below trend line if it is drop, and over if it is growth)
+        for (let k = 0; k < data.length; k++) {
+
+            if (k == i || k == extreme)
+                continue;
+
+            // Some point below support trend line or above resistance trend line
+            if (compare(data[k][valueField], f(k)))
+                return false;
+        }
+
+        return true;
+    }
+
+    // Get trend slope
+    GetTrendSlope(data, valueField) {
+
+        let n = data.length;
+        let sumX = 0;
+        let sumY = 0;
+        let sumXY = 0;
+        let sumXSquared = 0;
+
+        for (let x = 0; x < data.length; x++) {
+            let y = data[x][valueField];
+
+            sumX += x;
+            sumY += y;
+            sumXY += (x * y);
+            sumXSquared += Math.pow(x, 2);
+        }
+
+        return ((n * sumXY) - (sumX * sumY)) / ((n * sumXSquared) - Math.pow(sumX, 2));
     }
 
     // Calculate trends data required by chart to draw it
