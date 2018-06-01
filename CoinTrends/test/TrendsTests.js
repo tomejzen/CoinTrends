@@ -24,19 +24,6 @@ describe('Trends', function () {
         { value: 7 },
         { value: 6 },
     ];
-    
-    it('should calculate extremes', function () {
-
-        // Arrange 
-        let trends = new Trends();
-
-        // Act
-        let extremes = trends.GetAllExtremePoints(data1, 'value');
-        
-        // Assert
-        expect(extremes.minimums).toEqual([0, 2, 5]);
-        expect(extremes.maximums).toEqual([1, 3, 6]);
-    });
 
     it('should calculate growth trend', function () {
         
@@ -61,6 +48,7 @@ describe('Trends', function () {
 
         // Act
         let trend = trends.CalculateTrend(data2, 'value');
+        console.log(trend);
         
         // Assert
         expect(trend.type).toEqual('drop');
@@ -92,7 +80,7 @@ describe('Trends', function () {
         ];
 
         // Act
-        let trendLine = trends.CalculateTrendLine(data, 'value', [0, 2], (a, b) => a > b);
+        let trendLine = trends.CalculateTrendLine(data, 'value', 2, (a, b) => a > b);
 
         // Assert
         expect(trendLine.startValue).toEqual(1);
@@ -101,28 +89,7 @@ describe('Trends', function () {
         expect(trendLine.bFactor).toEqual(1);
         
     });
-
-    it('should return empty trend line if not enough extremes points', function () {
-
-        // Arrange
-        let trends = new Trends();
-        let data = [
-            { value: 1 },
-            { value: -1 },
-            { value: 3 },
-        ];
-
-        // Act
-        let trendLine = trends.CalculateTrendLine(data, 'value', [0]);
-
-        // Assert
-        expect(trendLine.startValue).toEqual(data[0]['value']);
-        expect(trendLine.endValue).toEqual(data[data.length - 1]['value']);
-        expect(trendLine.aFactor).toEqual(0);
-        expect(trendLine.bFactor).toEqual(0);
-
-    });
-
+    
     it('should return null trend line if data is too small', function () {
 
         // Arrange
@@ -153,12 +120,9 @@ describe('Trends', function () {
         ];
 
         // Act
-        let extremes = trends.GetAllExtremePoints(data, 'value');
         let trend = trends.CalculateTrend(data, 'value');
         
         // Assert
-        expect(extremes.minimums).toEqual([0, 8]);
-        expect(extremes.maximums).toEqual([6, 9]);
         expect(trend.type).toEqual('drop');
         expect(trend.startValue).toEqual(11.49);
         expect(trend.endValue).toEqual(8.79);
