@@ -27,7 +27,7 @@
             return;
 
         // Loop through every single trend
-        for (let j = 0; j < watchedCoinTrends.length; j++) {
+        for (let j = 1; j < watchedCoinTrends.length; j++) {
 
             let coinTrend = watchedCoinTrends[j];
 
@@ -45,9 +45,9 @@
                     if (j >= trends[coinName].length - 1)
                         continue;
 
-                    let otherCoinTrend = trends[coinName][j + 1];
+                    let otherCoinTrend = trends[coinName][j - 1];
                     if (otherCoinTrend.type == coinTrend.type)
-                        otherCoinNames += coinName + ", ";
+                        otherCoinNames += coinName + ", ";// + "(" + otherCoinTrend.startTime.substring(0, 10) + "->" + otherCoinTrend.endTime.substring(0, 10) + "), ";
                 }
             }
 
@@ -56,7 +56,7 @@
 
             // Append trend box
             otherCoinNames = otherCoinNames.substring(0, otherCoinNames.length - 2);
-            domElement.innerHTML += otherCoinNames + " started to " + coinTrend.type + " just after " + this.watchedCoin + "<br>";
+            domElement.innerHTML += otherCoinNames + " started to " + coinTrend.type + " just after " + this.watchedCoin + " (" + trendStart + "->" + trendEnd + ")<br>";
         }
 
     }
