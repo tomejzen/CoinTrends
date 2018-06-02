@@ -15,25 +15,33 @@
 
         // Get data extremes
         let extremes = this.GetMaximumAndMinimumIndex(data, valueField);
+        // Get trend of all data
         let trendSlope = this.GetTrendSlope(data, valueField);
-        
-        // Find drop trend line
-        if (trendSlope < 0) {
 
-            let dropTrendLine = this.CalculateTrendLine(data, valueField, extremes.minimum, (a, b) => a < b);
-            dropTrendLine['type'] = 'drop';
-            return dropTrendLine;
+
+        // Find resistance trend line
+        if (trendSlope < 0) {
+            
+            let resistanceTrendLine = this.CalculateSupportResistance(data, valueField, extremes.maximum, (a, b) => a > b, trendSlope);
+            if (resistanceTrendLine != null)
+                resistanceTrendLine['type'] = 'drop';
+            
+            return resistanceTrendLine;
         }
-        // Find growth trend line
+        // Find support trend line
         else {
 
-            let growthTrendLine = this.CalculateTrendLine(data, valueField, extremes.maximum, (a, b) => a > b);
-            growthTrendLine['type'] = 'growth';
-            return growthTrendLine;
+            let supportTrendLine = this.CalculateSupportResistance(data, valueField, extremes.minimum, (a, b) => a < b, trendSlope);
+            if (supportTrendLine != null)
+                supportTrendLine['type'] = 'growth';
+
+            return supportTrendLine;
         }
     }
 
-    CalculateTrendLine(data, valueField, extreme, compare) {
+    CalculateSupportResistance(data, valueField, extreme, compare, trendSlope) {
+
+        let trendLine = null;
 
         for (let i = 0; i < data.length; i++) {
 
@@ -45,39 +53,38 @@
             let fFactors = this.CalculateFunctionFactors(extreme, data[extreme][valueField], i, data[i][valueField]);
 
             // Function is not what we are looking for (i.e. we got descending function for growth)
-            if (!compare(fFactors.aFactor, 0))
+            if (compare(fFactors.aFactor, 0) || fFactors.aFactor == 0)
                 continue;
-
+            
             // Function we will use to calculate points of trend line
             let f = (x) => (fFactors.aFactor * x) + fFactors.bFactor;
 
             // Check if calculated support/resistance trendline is valid
             if (this.IsValidSupportResistanceTrendLine(data, valueField, i, extreme, compare, f)) {
                 
-                return {
-                    startValue: f(0),
-                    endValue: f(data.length - 1),
-                    aFactor: fFactors.aFactor,
-                    bFactor: fFactors.bFactor
-                };
+                // Check if calculated trendline is better than last one
+                if (trendLine == null || Math.abs(trendSlope - fFactors.aFactor) < Math.abs(trendSlope - trendLine.aFactor)) {
+                    
+                    trendLine = {
+                        startValue: f(0),
+                        endValue: f(data.length - 1),
+                        aFactor: fFactors.aFactor,
+                        bFactor: fFactors.bFactor
+                    };
+                }
             }
-
         }
 
-        return {
-            startValue: data[0][valueField],
-            endValue: data[data.length - 1][valueField],
-            aFactor: 0,
-            bFactor: 0
-        };
+        // Return calculated trend line
+        return trendLine;
     }
 
     // Find extremes in data set
     GetMaximumAndMinimumIndex(data, valueField) {
 
         // Get indexes of maximum and minimum
-        let maximum = data.reduce((iMax, x, i, arr) => x[valueField] > arr[iMax][valueField] ? i : iMax, 0);
-        let minimum = data.reduce((iMin, x, i, arr) => x[valueField] < arr[iMin][valueField] ? i : iMin, 0);
+        let maximum = data.reduce((iMax, x, i, arr) => x[valueField] >= arr[iMax][valueField] ? i : iMax, 0);
+        let minimum = data.reduce((iMin, x, i, arr) => x[valueField] <= arr[iMin][valueField] ? i : iMin, 0);
 
         return {
             maximum: maximum,
@@ -135,6 +142,9 @@
 
             // Get trend informations
             let trend = this.CalculateTrend(dataPart, coinName);
+            if (trend == null)
+                continue;
+
             trend.startTime = dataPart[0]['time'].slice(0, 10) + " 12:00:00";
             trend.endTime = dataPart[dataPart.length - 1]['time'].slice(0, 10) + " 12:00:00";
 
