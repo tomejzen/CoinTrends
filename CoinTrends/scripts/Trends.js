@@ -3,7 +3,7 @@
     constructor() {
 
         this.DROP_COLOR = "#e74c3c";
-        this.GROWTH_COLOR = "#2ecc71";
+        this.GROW_COLOR = "#2ecc71";
         this.TREND_LENGTH = 10;
     }
 
@@ -33,7 +33,7 @@
 
             let supportTrendLine = this.CalculateSupportResistance(data, valueField, extremes.minimum, (a, b) => a < b, trendSlope);
             if (supportTrendLine != null)
-                supportTrendLine['type'] = 'growth';
+                supportTrendLine['type'] = 'grow';
 
             return supportTrendLine;
         }
@@ -52,7 +52,7 @@
             // Get function factors based on extreme point and current one
             let fFactors = this.CalculateFunctionFactors(extreme, data[extreme][valueField], i, data[i][valueField]);
 
-            // Function is not what we are looking for (i.e. we got descending function for growth)
+            // Function is not what we are looking for (i.e. we got descending function for grow)
             if (compare(fFactors.aFactor, 0) || fFactors.aFactor == 0)
                 continue;
             
@@ -95,7 +95,7 @@
     IsValidSupportResistanceTrendLine(data, valueField, i, extreme, compare, f) {
 
         // For every point in data check if current trend line is valid
-        // (No points available below trend line if it is drop, and over if it is growth)
+        // (No points available below trend line if it is drop, and over if it is grow)
         for (let k = 0; k < data.length; k++) {
 
             if (k == i || k == extreme)
@@ -150,8 +150,8 @@
 
             // Assign color of drop
             trend.color = this.DROP_COLOR;
-            if (trend.type == 'growth')
-                trend.color = this.GROWTH_COLOR;
+            if (trend.type == 'grow')
+                trend.color = this.GROW_COLOR;
 
             // Add trend to collection
             trends.push(trend);

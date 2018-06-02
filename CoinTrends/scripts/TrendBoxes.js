@@ -21,7 +21,7 @@
 
         }
 
-        // We are check for drops and growths based on this coin
+        // We are check for drops and grows based on this coin
         let watchedCoinTrends = trends[this.watchedCoin];
         if (watchedCoinTrends == undefined)
             return;
@@ -47,7 +47,7 @@
 
                     let otherCoinTrend = trends[coinName][j - 1];
                     if (otherCoinTrend.type == coinTrend.type)
-                        otherCoinNames += coinName + ", ";// + "(" + otherCoinTrend.startTime.substring(0, 10) + "->" + otherCoinTrend.endTime.substring(0, 10) + "), ";
+                        otherCoinNames += coinName.substring(0, 3) + ", ";// + "(" + otherCoinTrend.startTime.substring(0, 10) + "->" + otherCoinTrend.endTime.substring(0, 10) + "), ";
                 }
             }
 
@@ -56,7 +56,7 @@
 
             // Append trend box
             otherCoinNames = otherCoinNames.substring(0, otherCoinNames.length - 2);
-            domElement.innerHTML += otherCoinNames + " started to " + coinTrend.type + " just after " + this.watchedCoin + " (" + trendStart + "->" + trendEnd + ")<br>";
+            domElement.innerHTML += otherCoinNames + " started to " + coinTrend.type + " just after " + this.watchedCoin.substring(0, 3) + " (" + trendStart + "->" + trendEnd + ")<br>";
         }
 
     }

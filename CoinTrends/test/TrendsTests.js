@@ -25,7 +25,7 @@ describe('Trends', function () {
         { value: 5 },
     ];
      
-    it('should calculate growth trend', function () {
+    it('should calculate grow trend', function () {
         
         // Arrange
         let trends = new Trends();
@@ -34,14 +34,14 @@ describe('Trends', function () {
         let trend = trends.CalculateTrend(data1, 'value');
 
         // Assert
-        expect(trend.type).toEqual('growth');
+        expect(trend.type).toEqual('grow');
         expect(trend.aFactor).toEqual(7);
         expect(trend.bFactor).toEqual(-36);
         expect(trend.startValue).toEqual(-36);
         expect(trend.endValue).toEqual(6);
     });
 
-    it('should calculate growth trend #2', function () {
+    it('should calculate grow trend #2', function () {
 
         // Arrange
         let trends = new Trends();
@@ -55,14 +55,14 @@ describe('Trends', function () {
         let trend = trends.CalculateTrend(data, 'value');
 
         // Assert
-        expect(trend.type).toEqual('growth');
+        expect(trend.type).toEqual('grow');
         expect(trend.aFactor).toEqual(4);
         expect(trend.bFactor).toEqual(-6);
         expect(trend.startValue).toEqual(-6);
         expect(trend.endValue).toEqual(2);
     });
 
-    it('should calculate growth trend #3', function () {
+    it('should calculate grow trend #3', function () {
 
         // Arrange
         let trends = new Trends();
@@ -77,14 +77,14 @@ describe('Trends', function () {
         let trend = trends.CalculateTrend(data, 'value');
 
         // Assert
-        expect(trend.type).toEqual('growth');
+        expect(trend.type).toEqual('grow');
         expect(trend.aFactor).toEqual(1.5);
         expect(trend.bFactor).toEqual(-3.5);
         expect(trend.startValue).toEqual(-3.5);
         expect(trend.endValue).toEqual(1);
     });
 
-    it('should calculate growth trend #4', function () {
+    it('should calculate grow trend #4', function () {
 
         // Arrange
         let trends = new Trends();
@@ -101,14 +101,14 @@ describe('Trends', function () {
         let trend = trends.CalculateTrend(data, 'value');
 
         // Assert
-        expect(trend.type).toEqual('growth');
+        expect(trend.type).toEqual('grow');
         expect(trend.aFactor).toEqual(0.25);
         expect(trend.bFactor).toEqual(-0.25);
         expect(trend.startValue).toEqual(-0.25);
         expect(trend.endValue).toEqual(1);
     });
 
-    it('should calculate growth trend #5', function () {
+    it('should calculate grow trend #5', function () {
 
         // Arrange
         let trends = new Trends();
@@ -127,7 +127,7 @@ describe('Trends', function () {
         let trend = trends.CalculateTrend(data, 'value');
         
         // Assert
-        expect(trend.type).toEqual('growth');
+        expect(trend.type).toEqual('grow');
         expect(trend.aFactor).toEqual(1);
         expect(trend.bFactor).toEqual(-5);
         expect(trend.startValue).toEqual(-5);
@@ -287,7 +287,7 @@ describe('Trends', function () {
         let trend = trends.CalculateTrend(data, 'value');
 
         // Assert
-        expect(trend.type).toEqual('growth');
+        expect(trend.type).toEqual('grow');
     });
 
     it('should get maximum and minimum indexes', function () {
