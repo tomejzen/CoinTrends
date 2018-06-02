@@ -4,10 +4,17 @@
     let historicalDataProvider = new HistoricalDataProvider();
     let chartController = new ChartController();
     let trends = new Trends();
+    let trendBoxes = new TrendBoxes();
+    let trendLines = [];
 
     // Initalize chart
     AmCharts.ready(function () {
         chartController.RenderChart('chart');
+        
+        chartController.chart.addListener('zoomed', (event) => {
+            
+            trendBoxes.updateTrendBoxes('trend-boxes', trendLines, event);
+        });
     });
 
     // Load data and create callback to deal with received data
@@ -23,8 +30,11 @@
         chartController.chart.dataProvider = mergedData;
 
         // Draw graph trend lines
-        let trendLines = trends.CalculateTrends(chartController.chart.dataProvider, coinName);
-        trendLines.forEach(trend => {
+        let coinTrendLines = trends.CalculateTrends(chartController.chart.dataProvider, coinName);
+        trendLines[coinName] = coinTrendLines;
+        trendBoxes.updateTrendBoxes('trend-boxes', trendLines, null);
+
+        coinTrendLines.forEach(trend => {
 
             let trendLine = chartController.CreateTrendLine(trend.startTime, trend.startValue, trend.endTime, trend.endValue, trend.color);
             chartController.chart.addTrendLine(trendLine);

@@ -135,10 +135,10 @@
 
         let trends = [];
 
-        for (let k = 0; k < Math.floor(data.length / this.TREND_LENGTH); k++) {
+        for (let k = data.length; k > 0; k -= this.TREND_LENGTH) {
 
             // Slice data to get only week part
-            let dataPart = data.slice(k * this.TREND_LENGTH, (k + 1) * this.TREND_LENGTH);
+            let dataPart = data.slice(k, k + this.TREND_LENGTH);
 
             // Get trend informations
             let trend = this.CalculateTrend(dataPart, coinName);
