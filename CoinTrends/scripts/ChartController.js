@@ -16,6 +16,7 @@
 
         // Create chart
         this.chart = this.CreateChart();
+        this.chart.responsive = { "enabled": true };
 
         // Render to element with specified id
         this.chart.write(elementId);
