@@ -17,4 +17,13 @@
 
         return false;
     }
+    
+    static FormatDate(date) {
+
+        let month = date.toLocaleString("en-us", { month: "short" });
+        let day = date.getDate();
+        let year = date.getFullYear();
+
+        return month + ' ' + day + ', ' + year;
+    }
 }

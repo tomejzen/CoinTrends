@@ -61,6 +61,9 @@
         if (coinTrend.type == 'grow')
             src = 'images/arrowupgreen.svg';
 
+        let startDate = new Date(coinTrend.startTime);
+        startDate = DatesExtension.FormatDate(startDate);
+
         // Append element
         this.domElement.innerHTML += `
             <div class="trend-box">
@@ -69,7 +72,7 @@
                 </div>
                 <div class="content">
                     <div class="title">
-                        ${this.watchedCoinName.substring(0, 3)} ${coinTrend.type} - ${coinTrend.startTime.substring(0, 10)}
+                        ${this.watchedCoinName.substring(0, 3)} ${coinTrend.type} - ${startDate}
                     </div>
                     <div class="desc">${otherCoins.join(', ')} started to ${coinTrend.type} just after ${this.watchedCoinName.substring(0, 3)}</div>
                 </div>
