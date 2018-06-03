@@ -280,7 +280,6 @@ describe('Trends', function () {
     it('should validate valid support trendline', function () {
 
         // Arrange
-        let trends = new Trends();
         let data = [
             { value: 2 },
             { value: 0 },
@@ -288,7 +287,7 @@ describe('Trends', function () {
         ];
 
         // Act
-        let isValid = trends.IsValidSupportResistanceTrendLine(data, 'value', 2, 1, (a, b) => a < b, (x) => (4 * x) + (-4));
+        let isValid = Trends.IsValidSupportResistanceTrendLine(data, 'value', 2, 1, (a, b) => a < b, (x) => (4 * x) + (-4));
 
         // Assert
         expect(isValid).toBeTruthy();
@@ -297,7 +296,6 @@ describe('Trends', function () {
     it('should not validate invalid support trendline', function () {
 
         // Arrange
-        let trends = new Trends();
         let data = [
             { value: 2 },
             { value: 0 },
@@ -306,7 +304,7 @@ describe('Trends', function () {
         ];
 
         // Act
-        let isValid = trends.IsValidSupportResistanceTrendLine(data, 'value', 2, 1, (a, b) => a < b, (x) => (4 * x) + (-4));
+        let isValid = Trends.IsValidSupportResistanceTrendLine(data, 'value', 2, 1, (a, b) => a < b, (x) => (4 * x) + (-4));
 
         // Assert
         expect(isValid).toBeFalsy();
@@ -315,7 +313,6 @@ describe('Trends', function () {
     it('should validate valid resistance trendline', function () {
 
         // Arrange
-        let trends = new Trends();
         let data = [
             { value: 1 },
             { value: 3 },
@@ -323,7 +320,7 @@ describe('Trends', function () {
         ];
 
         // Act
-        let isValid = trends.IsValidSupportResistanceTrendLine(data, 'value', 2, 1, (a, b) => a > b, (x) => ((-3) * x) + (6));
+        let isValid = Trends.IsValidSupportResistanceTrendLine(data, 'value', 2, 1, (a, b) => a > b, (x) => ((-3) * x) + (6));
 
         // Assert
         expect(isValid).toBeTruthy();

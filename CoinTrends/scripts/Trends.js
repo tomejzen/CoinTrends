@@ -57,7 +57,7 @@
                 continue;
             
             // Check if calculated support/resistance trendline is valid
-            if (this.IsValidSupportResistanceTrendLine(data, valueField, i, extreme, compare, functionFormula.func)) {
+            if (Trends.IsValidSupportResistanceTrendLine(data, valueField, i, extreme, compare, functionFormula.func)) {
                 
                 // Check if calculated trendline is better than last one
                 if (trendLine == null || Math.abs(trendSlope - functionFormula.aFactor) < Math.abs(trendSlope - trendLine.aFactor)) {
@@ -76,7 +76,7 @@
         return trendLine;
     }
     
-    IsValidSupportResistanceTrendLine(data, valueField, i, extreme, compare, f) {
+    static IsValidSupportResistanceTrendLine(data, valueField, i, extreme, compare, f) {
 
         // For every point in data check if current trend line is valid
         // (No points available below trend line if it is drop, and over if it is grow)

@@ -4,7 +4,7 @@
     let historicalDataProvider = new HistoricalDataProvider();
     let chartController = new ChartController();
     let trends = new Trends();
-    let trendBoxes = new TrendBoxes();
+    let trendBoxes = new TrendBoxes('trend-boxes', 'BTCUSD');
     let trendLines = [];
 
     // Initalize chart
@@ -13,7 +13,7 @@
         
         chartController.chart.addListener('zoomed', (event) => {
             
-            trendBoxes.updateTrendBoxes('trend-boxes', trendLines, event);
+            trendBoxes.updateTrendBoxes(trendLines, event);
         });
     });
 
@@ -23,7 +23,7 @@
 
         // Merge received data with already loaded data
         fetchedData.forEach(v => v[coinName] = v.average);
-        let mergedData = chartController.MergeData(chartController.chart.dataProvider, loadedValues, fetchedData, [coinName]);
+        let mergedData = historicalDataProvider.MergeData(chartController.chart.dataProvider, loadedValues, fetchedData, [coinName]);
 
         // Update chart sources
         loadedValues.push(coinName);
@@ -32,7 +32,7 @@
         // Draw graph trend lines
         let coinTrendLines = trends.CalculateTrends(chartController.chart.dataProvider, coinName);
         trendLines[coinName] = coinTrendLines;
-        trendBoxes.updateTrendBoxes('trend-boxes', trendLines, null);
+        trendBoxes.updateTrendBoxes(trendLines, null);
 
         coinTrendLines.forEach(trend => {
 
