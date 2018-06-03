@@ -1,76 +1,79 @@
 ﻿class TrendBoxes {
 
-    constructor() {
+    constructor(id, watchedCoinName) {
 
         this.startDate = null;
         this.endDate = null;
-        this.watchedCoin = 'BTCUSD';
+        this.watchedCoinName = watchedCoinName;
+        this.domElement = document.getElementById(id);
     }
     
-    updateTrendBoxes(id, trends, event) {
+    updateTrendBoxes(trends, event) {
 
-        // Get element where we will put trend boxes
-        let domElement = document.getElementById(id);
-        domElement.innerHTML = '';
+        this.clearTrendBoxes();
 
         // If zoom event fired update border dates
         if (event != null && event.type == 'zoomed') {
 
             this.startDate = event.startDate.toISOString().substring(0, 10);
             this.endDate = event.endDate.toISOString().substring(0, 10);
-
         }
 
-        // We are check for drops and grows based on this coin
-        let watchedCoinTrends = trends[this.watchedCoin];
+        // We are checking for drops and grows based on this coin
+        let watchedCoinTrends = trends[this.watchedCoinName];
         if (watchedCoinTrends == undefined)
             return;
 
         // Loop through every single trend
         for (let j = 1; j < watchedCoinTrends.length; j++) {
-
-            let coinTrend = watchedCoinTrends[j];
-
-            let trendStart = coinTrend.startTime.substring(0, 10);
-            let trendEnd = coinTrend.endTime.substring(0, 10);
-
-            let otherCoinNames = '';
-            if (this.isDateRangeCollidingWithDateRange(trendStart, trendEnd, this.startDate, this.endDate)) {
+            
+            let otherCoins = [];
+            if (DatesExtension.isDateRangeCollidingWithDateRange(watchedCoinTrends[j].startTime, watchedCoinTrends[j].endTime, this.startDate, this.endDate)) {
 
                 for (let coinName in trends) {
 
-                    if (coinName == this.watchedCoin)
+                    if (coinName == this.watchedCoinName || j >= trends[coinName].length)
                         continue;
 
-                    if (j >= trends[coinName].length - 1)
-                        continue;
-
-                    let otherCoinTrend = trends[coinName][j - 1];
-                    if (otherCoinTrend.type == coinTrend.type)
-                        otherCoinNames += coinName.substring(0, 3) + ", ";// + "(" + otherCoinTrend.startTime.substring(0, 10) + "->" + otherCoinTrend.endTime.substring(0, 10) + "), ";
+                    if (trends[coinName][j].type == watchedCoinTrends[j].type)
+                        otherCoins.push(coinName.substring(0, 3));// + " (" + trends[coinName][j].startTime + " -> " + trends[coinName][j].endTime + ")");
                 }
             }
 
-            if (otherCoinNames == '')
-                continue;
-
             // Append trend box
-            otherCoinNames = otherCoinNames.substring(0, otherCoinNames.length - 2);
-            domElement.innerHTML += otherCoinNames + " started to " + coinTrend.type + " just after " + this.watchedCoin.substring(0, 3) + " (" + trendStart + "->" + trendEnd + ")<br>";
+            this.appendTrendBox(watchedCoinTrends[j], otherCoins);
         }
 
     }
 
-    isDateRangeCollidingWithDateRange(startDate, endDate, borderStartDate, borderEndDate) {
+    clearTrendBoxes() {
 
-        if (borderStartDate == null && borderEndDate == null)
-            return true;
+        this.domElement.innerHTML = '';
+    }
 
-        if (startDate <= borderStartDate && endDate >= borderStartDate ||
-            startDate >= borderStartDate && startDate <= borderEndDate ||
-            startDate <= borderEndDate && endDate >= borderEndDate)
-            return true;
+    appendTrendBox(coinTrend, otherCoins) {
 
-        return false;
+        // No coins with same trend - do not add trend box
+        if (otherCoins.length == 0)
+            return '';
+
+        let src = 'images/arrowdownred.svg';
+        if (coinTrend.type == 'grow')
+            src = 'images/arrowupgreen.svg';
+
+        // Append element
+        this.domElement.innerHTML += `
+            <div class="trend-box">
+                <div class="icon">
+                    <img src="${src}" alt="${coinTrend.type}">
+                </div>
+                <div class="content">
+                    <div class="title">
+                        ${this.watchedCoinName.substring(0, 3)} ${coinTrend.type} - ${coinTrend.startTime.substring(0, 10)}
+                    </div>
+                    <div class="desc">${otherCoins.join(', ')} started to ${coinTrend.type} just after ${this.watchedCoinName.substring(0, 3)}</div>
+                </div>
+            </div>
+        `;
     }
 }

@@ -1,73 +1,51 @@
 ﻿
 describe('Trends', function () {
 
-    let trendBoxes = new TrendBoxes();
+    let trendBoxes;
+    beforeEach(function () {
 
-    it('should detect date ranges colliding, when one started before', function () {
-
-        // Arrange
-
-        // Act
-        let colliding = trendBoxes.isDateRangeCollidingWithDateRange("2012-12-12", "2012-12-20", "2012-12-14", "2012-12-21");
-
-        // Assert
-        expect(colliding).toBeTruthy();
+        document.body.insertAdjacentHTML('afterbegin', '<div id="trend-boxes"></div>');
+        trendBoxes = new TrendBoxes('trend-boxes', 'BTCUSD');
     });
 
-    it('should detect date ranges colliding, when one started inside', function () {
+    it('should clear trendbox element', function () {
 
         // Arrange
+        let boxesElem = document.getElementById('trend-boxes');
+        boxesElem.innerHTML = 'foo';
 
         // Act
-        let colliding = trendBoxes.isDateRangeCollidingWithDateRange("2012-12-12", "2012-12-20", "2012-12-10", "2012-12-14");
+        trendBoxes.clearTrendBoxes();
 
         // Assert
-        expect(colliding).toBeTruthy();
+        expect(boxesElem.innerHTML).toEqual('');
     });
 
-    it('should detect date ranges colliding, when one is sub range', function () {
+    it('should append new trendbox', function () {
 
         // Arrange
+        let boxesElem = document.getElementById('trend-boxes');
+        let coinTrend = {
+            aFactor: 1.0207142857142872,
+            bFactor: 425.84,
+            color: "#2ecc71",
+            endTime: "2016-05-13 12:00:00",
+            endValue: 455.4407142857143,
+            startTime: "2016-04-14 12:00:00",
+            startValue:  425.84,
+            type: "grow"
+        };
+        let otherCoins = [
+            'ETH', 'LTC'
+        ];
 
         // Act
-        let colliding = trendBoxes.isDateRangeCollidingWithDateRange("2012-12-12", "2012-12-20", "2012-12-10", "2012-12-30");
+        trendBoxes.appendTrendBox(coinTrend, otherCoins);
 
         // Assert
-        expect(colliding).toBeTruthy();
+        expect(boxesElem.innerHTML).toContain('LTC');
+        expect(boxesElem.innerHTML).toContain('ETH');
+        expect(boxesElem.innerHTML).toContain('grow');
+        expect(boxesElem.innerHTML).toContain('BTC');
     });
-
-
-    it('should not detect date ranges collision, when they are not colliding', function () {
-
-        // Arrange
-
-        // Act
-        let colliding = trendBoxes.isDateRangeCollidingWithDateRange("2012-12-12", "2012-12-20", "2012-12-24", "2012-12-30");
-
-        // Assert
-        expect(colliding).toBeFalsy();
-    });
-    
-    it('should not detect date ranges collision, when they are not colliding #2', function () {
-
-        // Arrange
-
-        // Act
-        let colliding = trendBoxes.isDateRangeCollidingWithDateRange("2012-12-12", "2012-12-20", "2011-12-24", "2011-12-30");
-
-        // Assert
-        expect(colliding).toBeFalsy();
-    });
-
-    it('should detect date ranges collision, when border range is null', function () {
-
-        // Arrange
-
-        // Act
-        let colliding = trendBoxes.isDateRangeCollidingWithDateRange("2012-12-12", "2012-12-20", null, null);
-
-        // Assert
-        expect(colliding).toBeTruthy();
-    });
-
 });

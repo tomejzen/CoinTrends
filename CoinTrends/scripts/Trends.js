@@ -4,7 +4,7 @@
 
         this.DROP_COLOR = "#e74c3c";
         this.GROW_COLOR = "#2ecc71";
-        this.TREND_LENGTH = 10;
+        this.TREND_LENGTH = 30;
     }
 
     CalculateTrend(data, valueField) {
@@ -14,9 +14,9 @@
             return null;
 
         // Get data extremes
-        let extremes = this.GetMaximumAndMinimumIndex(data, valueField);
+        let extremes = FunctionAnalysis.GetMaximumAndMinimumIndex(data, valueField);
         // Get trend of all data
-        let trendSlope = this.GetTrendSlope(data, valueField);
+        let trendSlope = FunctionAnalysis.CalculateFunctionSlope(data, valueField);
 
 
         // Find resistance trend line
@@ -50,26 +50,23 @@
                 continue;
 
             // Get function factors based on extreme point and current one
-            let fFactors = this.CalculateFunctionFactors(extreme, data[extreme][valueField], i, data[i][valueField]);
+            let functionFormula = FunctionAnalysis.CalculateFunctionFormula(extreme, data[extreme][valueField], i, data[i][valueField]);
 
             // Function is not what we are looking for (i.e. we got descending function for grow)
-            if (compare(fFactors.aFactor, 0) || fFactors.aFactor == 0)
+            if (compare(functionFormula.aFactor, 0) || functionFormula.aFactor == 0)
                 continue;
             
-            // Function we will use to calculate points of trend line
-            let f = (x) => (fFactors.aFactor * x) + fFactors.bFactor;
-
             // Check if calculated support/resistance trendline is valid
-            if (this.IsValidSupportResistanceTrendLine(data, valueField, i, extreme, compare, f)) {
+            if (Trends.IsValidSupportResistanceTrendLine(data, valueField, i, extreme, compare, functionFormula.func)) {
                 
                 // Check if calculated trendline is better than last one
-                if (trendLine == null || Math.abs(trendSlope - fFactors.aFactor) < Math.abs(trendSlope - trendLine.aFactor)) {
+                if (trendLine == null || Math.abs(trendSlope - functionFormula.aFactor) < Math.abs(trendSlope - trendLine.aFactor)) {
                     
                     trendLine = {
-                        startValue: f(0),
-                        endValue: f(data.length - 1),
-                        aFactor: fFactors.aFactor,
-                        bFactor: fFactors.bFactor
+                        startValue: functionFormula.func(0),
+                        endValue: functionFormula.func(data.length - 1),
+                        aFactor: functionFormula.aFactor,
+                        bFactor: functionFormula.bFactor
                     };
                 }
             }
@@ -78,21 +75,8 @@
         // Return calculated trend line
         return trendLine;
     }
-
-    // Find extremes in data set
-    GetMaximumAndMinimumIndex(data, valueField) {
-
-        // Get indexes of maximum and minimum
-        let maximum = data.reduce((iMax, x, i, arr) => x[valueField] >= arr[iMax][valueField] ? i : iMax, 0);
-        let minimum = data.reduce((iMin, x, i, arr) => x[valueField] <= arr[iMin][valueField] ? i : iMin, 0);
-
-        return {
-            maximum: maximum,
-            minimum: minimum
-        };
-    }
-
-    IsValidSupportResistanceTrendLine(data, valueField, i, extreme, compare, f) {
+    
+    static IsValidSupportResistanceTrendLine(data, valueField, i, extreme, compare, f) {
 
         // For every point in data check if current trend line is valid
         // (No points available below trend line if it is drop, and over if it is grow)
@@ -108,28 +92,7 @@
 
         return true;
     }
-
-    // Get trend slope
-    GetTrendSlope(data, valueField) {
-
-        let n = data.length;
-        let sumX = 0;
-        let sumY = 0;
-        let sumXY = 0;
-        let sumXSquared = 0;
-
-        for (let x = 0; x < data.length; x++) {
-            let y = data[x][valueField];
-
-            sumX += x;
-            sumY += y;
-            sumXY += (x * y);
-            sumXSquared += Math.pow(x, 2);
-        }
-
-        return ((n * sumXY) - (sumX * sumY)) / ((n * sumXSquared) - Math.pow(sumX, 2));
-    }
-
+    
     // Calculate trends data required by chart to draw it
     CalculateTrends(data, coinName) {
 
@@ -159,26 +122,5 @@
 
         return trends;
     }
-
-
-    // Check function direction going from b to a
-    GetDirection(a, b) {
-
-        if (a == b)
-            return 'same';
-
-        return (a - b) > 0 ? 'up' : 'down';
-    }
-
-    // Translate points to function factors
-    // y = aFactor * x + bFactor
-    CalculateFunctionFactors(pointA, valueA, pointB, valueB) {
-
-        let aFactor = (valueB - valueA) / (pointB - pointA);
-        return {
-            aFactor: aFactor,
-            bFactor: valueA - (pointA * aFactor)
-        };
-    }
-
+    
 }
