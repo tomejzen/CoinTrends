@@ -17,7 +17,7 @@
         // Create chart
         this.chart = this.CreateChart();
         this.chart.responsive = { "enabled": true };
-
+        
         // Render to element with specified id
         this.chart.write(elementId);
     }
@@ -79,6 +79,7 @@
         let legend = new AmCharts.AmLegend();
         legend.marginLeft = 110;
         legend.useGraphSettings = true;
+        legend.switchable = false;
         return legend;
     }
 
