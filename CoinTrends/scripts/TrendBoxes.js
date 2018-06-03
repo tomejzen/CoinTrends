@@ -64,8 +64,15 @@
         // Append element
         this.domElement.innerHTML += `
             <div class="trend-box">
-                <img src="${src}" alt="${coinTrend.type}">
-                ${otherCoins.join(', ')} started to ${coinTrend.type} just after ${this.watchedCoinName.substring(0,3)} (${coinTrend.startTime.substring(0, 10)} -> ${coinTrend.endTime.substring(0, 10)})
+                <div class="icon">
+                    <img src="${src}" alt="${coinTrend.type}">
+                </div>
+                <div class="content">
+                    <div class="title">
+                        ${this.watchedCoinName.substring(0, 3)} ${coinTrend.type} - ${coinTrend.startTime.substring(0, 10)}
+                    </div>
+                    <div class="desc">${otherCoins.join(', ')} started to ${coinTrend.type} just after ${this.watchedCoinName.substring(0, 3)}</div>
+                </div>
             </div>
         `;
     }
