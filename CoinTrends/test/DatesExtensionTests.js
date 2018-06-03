@@ -6,7 +6,7 @@ describe('DatesExtension', function () {
         // Arrange
 
         // Act
-        let colliding = DatesExtension.isDateRangeCollidingWithDateRange("2012-12-12", "2012-12-20", "2012-12-14", "2012-12-21");
+        let colliding = DatesExtension.IsDateRangeCollidingWithDateRange("2012-12-12", "2012-12-20", "2012-12-14", "2012-12-21");
 
         // Assert
         expect(colliding).toBeTruthy();
@@ -17,7 +17,7 @@ describe('DatesExtension', function () {
         // Arrange
 
         // Act
-        let colliding = DatesExtension.isDateRangeCollidingWithDateRange("2012-12-12", "2012-12-20", "2012-12-10", "2012-12-14");
+        let colliding = DatesExtension.IsDateRangeCollidingWithDateRange("2012-12-12", "2012-12-20", "2012-12-10", "2012-12-14");
 
         // Assert
         expect(colliding).toBeTruthy();
@@ -28,7 +28,7 @@ describe('DatesExtension', function () {
         // Arrange
 
         // Act
-        let colliding = DatesExtension.isDateRangeCollidingWithDateRange("2012-12-12", "2012-12-20", "2012-12-10", "2012-12-30");
+        let colliding = DatesExtension.IsDateRangeCollidingWithDateRange("2012-12-12", "2012-12-20", "2012-12-10", "2012-12-30");
 
         // Assert
         expect(colliding).toBeTruthy();
@@ -40,7 +40,7 @@ describe('DatesExtension', function () {
         // Arrange
 
         // Act
-        let colliding = DatesExtension.isDateRangeCollidingWithDateRange("2012-12-12", "2012-12-20", "2012-12-24", "2012-12-30");
+        let colliding = DatesExtension.IsDateRangeCollidingWithDateRange("2012-12-12", "2012-12-20", "2012-12-24", "2012-12-30");
 
         // Assert
         expect(colliding).toBeFalsy();
@@ -51,7 +51,7 @@ describe('DatesExtension', function () {
         // Arrange
 
         // Act
-        let colliding = DatesExtension.isDateRangeCollidingWithDateRange("2012-12-12", "2012-12-20", "2011-12-24", "2011-12-30");
+        let colliding = DatesExtension.IsDateRangeCollidingWithDateRange("2012-12-12", "2012-12-20", "2011-12-24", "2011-12-30");
 
         // Assert
         expect(colliding).toBeFalsy();
@@ -62,7 +62,7 @@ describe('DatesExtension', function () {
         // Arrange
 
         // Act
-        let colliding = DatesExtension.isDateRangeCollidingWithDateRange("2012-12-12", "2012-12-20", null, null);
+        let colliding = DatesExtension.IsDateRangeCollidingWithDateRange("2012-12-12", "2012-12-20", null, null);
 
         // Assert
         expect(colliding).toBeTruthy();
@@ -73,7 +73,7 @@ describe('DatesExtension', function () {
         // Arrange
 
         // Act
-        let colliding = DatesExtension.isDateRangeCollidingWithDateRange("2018-01-25", "2018-06-02")
+        let colliding = DatesExtension.IsDateRangeCollidingWithDateRange("2018-03-25", "2018-06-02", "2018-01-25", "2018-06-02");
 
         // Assert
         expect(colliding).toBeTruthy();
