@@ -19,13 +19,16 @@
             this.endDate = event.endDate.toISOString().substring(0, 10);
         }
 
+        console.log(this.startDate);
+        console.log(this.endDate);
+
         // We are checking for drops and grows based on this coin
         let watchedCoinTrends = trends[this.watchedCoinName];
         if (watchedCoinTrends == undefined)
             return;
 
         // Loop through every single trend
-        for (let j = 1; j < watchedCoinTrends.length; j++) {
+        for (let j = watchedCoinTrends.length - 1; j >= 0; j--) {
             
             let otherCoins = [];
             if (DatesExtension.IsDateRangeCollidingWithDateRange(watchedCoinTrends[j].startTime, watchedCoinTrends[j].endTime, this.startDate, this.endDate)) {

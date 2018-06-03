@@ -68,4 +68,14 @@ describe('DatesExtension', function () {
         expect(colliding).toBeTruthy();
     });
 
+    it('should detect date ranges collision when ending same day', function () {
+
+        // Arrange
+
+        // Act
+        let colliding = DatesExtension.isDateRangeCollidingWithDateRange("2018-01-25", "2018-06-02")
+
+        // Assert
+        expect(colliding).toBeTruthy();
+    });
 });
