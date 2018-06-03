@@ -4,7 +4,7 @@
 
         this.DROP_COLOR = "#e74c3c";
         this.GROW_COLOR = "#2ecc71";
-        this.TREND_LENGTH = 10;
+        this.TREND_LENGTH = 30;
     }
 
     CalculateTrend(data, valueField) {

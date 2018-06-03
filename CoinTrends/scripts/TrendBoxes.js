@@ -35,17 +35,17 @@
             let trendEnd = coinTrend.endTime.substring(0, 10);
 
             let otherCoinNames = '';
-            if (this.isDateRangeCollidingWithDateRange(trendStart, trendEnd, this.startDate, this.endDate)) {
+            if (DatesExtension.isDateRangeCollidingWithDateRange(trendStart, trendEnd, this.startDate, this.endDate)) {
 
                 for (let coinName in trends) {
 
                     if (coinName == this.watchedCoin)
                         continue;
 
-                    if (j >= trends[coinName].length - 1)
+                    if (j >= trends[coinName].length)
                         continue;
 
-                    let otherCoinTrend = trends[coinName][j - 1];
+                    let otherCoinTrend = trends[coinName][j];
                     if (otherCoinTrend.type == coinTrend.type)
                         otherCoinNames += coinName.substring(0, 3) + ", ";// + "(" + otherCoinTrend.startTime.substring(0, 10) + "->" + otherCoinTrend.endTime.substring(0, 10) + "), ";
                 }
@@ -59,18 +59,5 @@
             domElement.innerHTML += otherCoinNames + " started to " + coinTrend.type + " just after " + this.watchedCoin.substring(0, 3) + " (" + trendStart + "->" + trendEnd + ")<br>";
         }
 
-    }
-
-    isDateRangeCollidingWithDateRange(startDate, endDate, borderStartDate, borderEndDate) {
-
-        if (borderStartDate == null && borderEndDate == null)
-            return true;
-
-        if (startDate <= borderStartDate && endDate >= borderStartDate ||
-            startDate >= borderStartDate && startDate <= borderEndDate ||
-            startDate <= borderEndDate && endDate >= borderEndDate)
-            return true;
-
-        return false;
     }
 }
