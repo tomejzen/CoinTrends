@@ -1,10 +1,15 @@
 ﻿class DatesExtension {
 
-    static isDateRangeCollidingWithDateRange(startDate, endDate, borderStartDate, borderEndDate) {
+    static IsDateRangeCollidingWithDateRange(startTime, endTime, borderStartTime, borderEndTime) {
 
-        if (borderStartDate == null && borderEndDate == null)
+        if (borderStartTime == null || borderEndTime == null)
             return true;
 
+        let startDate = startTime.substring(0, 10);
+        let endDate = endTime.substring(0, 10);
+        let borderStartDate = borderStartTime.substring(0, 10);
+        let borderEndDate = borderEndTime.substring(0, 10);
+        
         if (startDate <= borderStartDate && endDate >= borderStartDate ||
             startDate >= borderStartDate && startDate <= borderEndDate ||
             startDate <= borderEndDate && endDate >= borderEndDate)

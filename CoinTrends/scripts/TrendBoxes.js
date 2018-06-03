@@ -28,7 +28,7 @@
         for (let j = 1; j < watchedCoinTrends.length; j++) {
             
             let otherCoins = [];
-            if (DatesExtension.isDateRangeCollidingWithDateRange(watchedCoinTrends[j].startTime, watchedCoinTrends[j].endTime, this.startDate, this.endDate)) {
+            if (DatesExtension.IsDateRangeCollidingWithDateRange(watchedCoinTrends[j].startTime, watchedCoinTrends[j].endTime, this.startDate, this.endDate)) {
 
                 for (let coinName in trends) {
 
