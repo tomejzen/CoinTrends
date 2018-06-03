@@ -194,19 +194,6 @@ describe('Trends', function () {
     });
 
 
-    it('should calculate function factors', function () {
-
-        // Arrange
-        let trends = new Trends();
-
-        // Act
-        let fFactors = trends.CalculateFunctionFactors(1, 0, 3, 1);
-
-        // Assert
-        expect(fFactors.aFactor).toEqual(0.5);
-        expect(fFactors.bFactor).toEqual(-0.5);
-    });
-
     it('should calculate trend line', function () {
 
         // Arrange
@@ -290,16 +277,55 @@ describe('Trends', function () {
         expect(trend.type).toEqual('grow');
     });
 
-    it('should get maximum and minimum indexes', function () {
+    it('should validate valid support trendline', function () {
 
         // Arrange
         let trends = new Trends();
+        let data = [
+            { value: 2 },
+            { value: 0 },
+            { value: 4 }
+        ];
 
         // Act
-        let minMax = trends.GetMaximumAndMinimumIndex(data1, 'value');
+        let isValid = trends.IsValidSupportResistanceTrendLine(data, 'value', 2, 1, (a, b) => a < b, (x) => (4 * x) + (-4));
 
         // Assert
-        expect(minMax.minimum).toEqual(5);
-        expect(minMax.maximum).toEqual(6);
+        expect(isValid).toBeTruthy();
+    });
+
+    it('should not validate invalid support trendline', function () {
+
+        // Arrange
+        let trends = new Trends();
+        let data = [
+            { value: 2 },
+            { value: 0 },
+            { value: 4 },
+            { value: 0 }
+        ];
+
+        // Act
+        let isValid = trends.IsValidSupportResistanceTrendLine(data, 'value', 2, 1, (a, b) => a < b, (x) => (4 * x) + (-4));
+
+        // Assert
+        expect(isValid).toBeFalsy();
+    });
+
+    it('should validate valid resistance trendline', function () {
+
+        // Arrange
+        let trends = new Trends();
+        let data = [
+            { value: 1 },
+            { value: 3 },
+            { value: 0 }
+        ];
+
+        // Act
+        let isValid = trends.IsValidSupportResistanceTrendLine(data, 'value', 2, 1, (a, b) => a > b, (x) => ((-3) * x) + (6));
+
+        // Assert
+        expect(isValid).toBeTruthy();
     });
 });
