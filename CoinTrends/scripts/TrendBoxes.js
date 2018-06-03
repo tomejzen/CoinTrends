@@ -19,9 +19,6 @@
             this.endDate = event.endDate.toISOString().substring(0, 10);
         }
 
-        console.log(this.startDate);
-        console.log(this.endDate);
-
         // We are checking for drops and grows based on this coin
         let watchedCoinTrends = trends[this.watchedCoinName];
         if (watchedCoinTrends == undefined)
