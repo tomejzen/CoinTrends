@@ -12,6 +12,10 @@
 
         this.clearTrendBoxes();
 
+        // Show loading icon
+        document.getElementById('trend-boxes').classList.remove('fade');
+        document.querySelector('.trend-boxes-loading .spinner').style.display = "block";
+
         // If zoom event fired update border dates
         if (event != null && event.type == 'zoomed') {
 
@@ -44,6 +48,9 @@
             this.appendTrendBox(watchedCoinTrends[j], otherCoins);
         }
 
+        // Hide loading icon
+        document.getElementById('trend-boxes').classList.add('fade');
+        document.querySelector('.trend-boxes-loading .spinner').style.display = "none";
     }
 
     clearTrendBoxes() {

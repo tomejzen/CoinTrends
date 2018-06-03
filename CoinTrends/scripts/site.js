@@ -43,6 +43,13 @@
         // Create graph of currenlty loaded coin
         let graph = chartController.CreateGraph(coinName, coinName, chartController.valueAxis);
         chartController.chart.addGraph(graph);
+
+        // Show chart if all data is loaded
+        if (loadedValues.length == historicalDataProvider.CRYPTOCURRENCIES.length) {
+
+            document.getElementById('chart').classList.add('fade');
+            document.querySelector('.chart-loading .spinner').style.display = "none";
+        }
     });
 
 })();
